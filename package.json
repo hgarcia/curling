@@ -1,0 +1,26 @@
+{
+  "name": "curling",
+  "version": "0.1.0",
+  "description": "A simple wrapper around curl with a easy to use interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/*.tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hgarcia/curling.git"
+  },
+  "devDependencies": {
+    "mocha": "1.7.4",
+    "should": "1.2.1"
+  },
+  "keywords": [
+    "curl",
+    "wrapper",
+    "remote",
+    "http",
+    "https"
+  ],
+  "author": "Hernan Garcia <hernan@dynamicprogrammer.com> (http://dynamicprogrammer.com)",
+  "license": "MIT"
+}
