@@ -23,11 +23,9 @@ Ex:
 
 ### connect(options)
 
-This method takes an `options` object with general options for the connection like the username and password in case you are using basic auth to connect to an end point.
+This method takes an `options` object with general options that will be re-used in each command.
 
-    var options = {username: "hernan", password: "secret"};
-
-At the moment those are the only options that connect knows how to deal with.
+    var options = {user: "hernan:secret"};
 
 It returns a connection object.
 

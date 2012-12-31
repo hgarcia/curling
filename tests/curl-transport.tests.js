@@ -7,6 +7,7 @@ describe('curl', function() {
     it('should run a command', function (done) {
       curl.run("--GET http://www.google.ca", function (err, result) {
         result.payload.should.be.ok;
+        console.log(result.stats);
         done(err);
       });
     });
