@@ -1,65 +1,125 @@
 var should = require("should");
 var curl = require('../index');
+var sinon = require('sinon');
 
-function catchCreateException(options) {
-  return function () {
-    try {
-      bitbucket.createClient(options);
-    } catch (e) {
-      return;
-    }
-    throw new Error('No error throw by class with options: ' + JSON.stringify(options));
-  };
-}
-
-function catchCreateRepoException(options, cb, done) {
-  return function (done) {
-    try {
-      bitbucket.createClient(goodOptions)
-      .getRepository(options, cb);
-    } catch (e) {
-      return done();
-    }
-    done(Error('No error throw by class with options: ' + JSON.stringify(options)));
-  };
-}
-
-describe('BitBucket', function() {
-  describe('.createClient()', function () {
-    it('should throw when no options passed', catchCreateException());
-    it('should throw when empty options passed', catchCreateException({}));
-    it('should throw when options with no username or password', catchCreateException({username: '', password: ''}));
-    it('should create a client', function () {
-      var client = bitbucket.createClient(goodOptions);
-      client.username.should.eql(goodOptions.username);
-      client.password.should.eql(goodOptions.password);
-    });
-  });
-
-  describe(".repositories()", function () {
-    it('should return a list of repositories for the user', function (done) {
-      var client = bitbucket.createClient(goodOptions);
-      client.repositories(function (err, repositories) {
-        Array.isArray(repositories).should.be.ok;
-        done();
+describe('curl', function() {
+  describe('.run(command, cb)', function () {
+    it('should run a command', function (done) {
+      curl.run("--GET http://www.google.ca", function (err, result) {
+        result.payload.should.be.ok;
+        done(err);
       });
     });
   });
 
-  describe(".getRepository()", function () {
-    it('should throw if no options passed', catchCreateRepoException(null, null));
-    it('should throw if empty options passed', catchCreateRepoException({}, null));
-    it('should throw if options with no username and password passed', catchCreateRepoException({slug: '', owner: ''}, null));
-    it('should throw if no cb passed', catchCreateRepoException({slug: 'app', owner: 'inline'}, null));
-    it('should return a Repository object', function (done) {
-      var client = bitbucket.createClient(goodOptions);
-      client.getRepository(repoData, function (err, repository) {
-        repository.should.have.property('provider');
-        repository.should.have.property('resourceURI');
-        repository.resourceURI.should.eql('/1.0/repositories/inline/app');
-        done();
+  describe('.connect(null)', function () {
+    it('should return a connection object', function () {
+      var connection = curl.connect(null);
+      connection.should.have.property('head');
+      connection.should.have.property('get');
+      connection.should.have.property('post');
+      connection.should.have.property('put');
+      connection.should.have.property('del');
+    });
+  });
+
+  describe('.connect(options)', function () {
+    it('should return a connection object', function () {
+      var connection = curl.connect({user: 'hernan:secret'});
+      connection.should.have.property('head');
+      connection.should.have.property('get');
+      connection.should.have.property('post');
+      connection.should.have.property('put');
+      connection.should.have.property('del');
+    });
+  });
+
+
+  describe('.connect({header: [], user: ""})', function () {
+    var connection;
+    beforeEach(function () {
+      connection = curl.connect({header: ["Accept: text/html"], user: 'hernan:secret'});
+      sinon.stub(curl, 'run', function (command, cb) { cb(null, true); });
+    });
+
+    afterEach(function () {
+      connection = null;
+      curl.run.restore();
+    });
+
+    describe('.head(url, null, cb)', function () {
+      it('should combine options in command', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', null, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --header \"Accept: text/html\" --user \"hernan:secret\"");
+          done(err);
+        });
       });
     });
   });
 
-});
+
+  describe('.connect(options)', function () {
+    var connection;
+    beforeEach(function () {
+      connection = curl.connect({user: 'hernan:secret'});
+      sinon.stub(curl, 'run', function (command, cb) { cb(null, true); });
+    });
+
+    afterEach(function () {
+      connection = null;
+      curl.run.restore();
+    });
+
+    describe('.head(url, null, cb)', function () {
+      it('should build a proper command', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', null, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --user \"hernan:secret\"");
+          done(err);
+        });
+      });
+    });
+
+    describe('.head(url, {header: string}, cb)', function () {
+      it('should build a proper command with some args', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', {header: "Accept: text/html"}, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --user \"hernan:secret\" --header \"Accept: text/html\"");
+          done(err);
+        });
+      });
+    });
+
+
+    describe('.head(url, {header: string, fail: null}, cb)', function () {
+      it('should build a proper command with some args', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', {header: "Accept: text/html", fail: null}, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --user \"hernan:secret\" --header \"Accept: text/html\" --fail");
+          done(err);
+        });
+      });
+    });
+
+    describe('.head(url, {header: []}, cb)', function () {
+      it('should build a proper command with some args', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', {header: ["Accept: text/html", "X-Custom: \"Hernan\""]}, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --user \"hernan:secret\" --header \"Accept: text/html\" --header \"X-Custom: \"Hernan\"\"");
+          done(err);
+        });
+      });
+    });
+
+    describe('.head(url, {H: []}, cb)', function () {
+      it('should build a proper command with some args', function (done) {
+        connection.head('http://www.dynamicprogrammer.com', {H: ["Accept: text/html", "X-Custom: \"Hernan\""]}, function (err, result) {
+          curl.run.calledOnce.should.be.ok;
+          curl.run.args[0][0].should.eql("--HEAD http://www.dynamicprogrammer.com --user \"hernan:secret\" -H \"Accept: text/html\" -H \"X-Custom: \"Hernan\"\"");
+          done(err);
+        });
+      });
+    });
+  });
+})

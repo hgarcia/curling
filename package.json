@@ -4,15 +4,16 @@
   "description": "A simple wrapper around curl with a easy to use interface.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/*.tests.js"
-  },
+    "test": "mocha tests/*.tests.js -t 15000 -R spec"
+   },
   "repository": {
     "type": "git",
     "url": "git://github.com/hgarcia/curling.git"
   },
   "devDependencies": {
     "mocha": "1.7.4",
-    "should": "1.2.1"
+    "should": "1.2.1",
+    "sinon": "1.5.2"
   },
   "keywords": [
     "curl",
