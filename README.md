@@ -3,6 +3,11 @@ curling
 
 A node wrapper for curl with a very simple api.
 
+History:
+
+0.3.0: Increase max buffer size for curl response. By [romansky](https://github.com/romansky) - [pull request](https://github.com/hgarcia/curling/pull/1)
+0.2.0: First release
+
 ## API
 
 Exports only two methods `connect` and `run`
