@@ -1,6 +1,8 @@
 curling
 =======
 
+[![Build Status](https://travis-ci.org/hgarcia/curling.png?branch=master)](https://travis-ci.org/hgarcia/curling)
+
 A node wrapper for curl with a very simple api.
 
 History:
