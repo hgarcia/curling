@@ -30,6 +30,15 @@ Ex:
       console.log(result.stats);   // should output some of the statistics on downloading the page
     });
 
+The following characters are not allowed to be provided as part of a command to prevent possible command injections:
+* Dollar Sign ($)
+* Ampersand (&)
+* Backquote (`)
+* Curly brackets ({})
+* Square brackets ([)
+* Semi-colon (;)
+* Vertical bar (|) 
+
 ### connect(options)
 
 This method takes an `options` object with general options that will be re-used in each command.
