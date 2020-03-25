@@ -7,28 +7,14 @@ A node wrapper for curl with a very simple api.
 
 History:
 
-0.4.0: Fix security issue reported by Snyk team
+1.0.0 Removes curl.run because of a possible security issue reported by the Snyk team
 
 0.3.0: Increase max buffer size for curl response. By [romansky](https://github.com/romansky) - [pull request](https://github.com/hgarcia/curling/pull/1)
 0.2.0: First release
 
 ## API
 
-Exports only two methods `connect` and `run`
-
-### run(command, cb)
-
-You shouldn't have to use `run` but is in there just as a convenience or if you need to do something crazy that is not possible to do via the connection object.
-
-It pretty much allow you to send any command with any option to curl. It used internally by connect and the connection object.
-
-Ex:
-
-    var curl = require('curling');
-    curl.run("--GET http://www.cnn.com", function (err, result) {
-      console.log(result.payload); // should output the html for the cnn page to console.
-      console.log(result.stats);   // should output some of the statistics on downloading the page
-    });
+Exports only one methods `connect`
 
 ### connect(options)
 
@@ -86,4 +72,4 @@ The `options` object is actually a hash where the keys should be the name of the
 
 The keys in an `options` object can be one of the following types, String, Array or null.
 
-Strings are useful when you only need to set a single value, arrays are used to pass multiple values, like data, header and so. Null is a specialcase and is used for empty flags, like `--false`.
+Strings are useful when you only need to set a single value, arrays are used to pass multiple values, like data, header and so. Null is a special case and is used for empty flags, like `--false`.

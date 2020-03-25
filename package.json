@@ -1,12 +1,12 @@
 {
   "name": "curling",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "A simple wrapper around curl with a easy to use interface.",
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*.tests.js -t 15000 -R spec",
     "test-w": "mocha tests/*.tests.js -t 15000 -R spec -w"
-   },
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/hgarcia/curling.git"
@@ -25,7 +25,10 @@
   ],
   "author": "Hernan Garcia <hernan@dynamicprogrammer.com> (http://dynamicprogrammer.com)",
   "contributors": [
-    { "name": "Roman Landenband", "email": "roman.land@gmail.com" }
+    {
+      "name": "Roman Landenband",
+      "email": "roman.land@gmail.com"
+    }
   ],
   "license": "MIT"
 }
