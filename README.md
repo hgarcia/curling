@@ -7,7 +7,7 @@ A node wrapper for curl with a very simple api.
 
 History:
 
-1.1.0 Fixes bug introduce on 1.0.0
+1.1.0 Fixes bug introduce on 1.0.0 re-exports `.run()` and adds validation thanks @snoopysecurity and @joshuambg for the PR's
 
 1.0.0 Removes curl.run because of a possible security issue reported by the [Snyk team](https://snyk.io/vuln/SNYK-JS-CURLING-546484) [CVE-2019-10789](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-10789)
 

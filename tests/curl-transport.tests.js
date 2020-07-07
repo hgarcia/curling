@@ -2,9 +2,7 @@
 "use strict";
 
 describe("curl", function() {
-
   var curl = require("../index");
-  var sinon = require("sinon");
   var expect = require("chai").expect;
 
   describe(".connect(null)", function () {
